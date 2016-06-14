@@ -1,0 +1,15 @@
+---
+- hosts: cash-bo
+  remote_user: infra
+  become: yes
+  become_user: root
+  tasks:
+    - name: Copy HAproxy Config
+      copy: src=/home/infra/haproxy/pro-cash-bo-haproxy/haproxy dest=/etc
+                      owner=root group=root mode=0644
+      notify:
+      - Reload HAproxy
+
+  handlers:
+    - name: Reload HAproxy
+      service: name=haproxy state=reloaded
